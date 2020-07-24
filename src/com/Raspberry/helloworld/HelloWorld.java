@@ -43,11 +43,9 @@ public class HelloWorld {
             op = Integer.parseInt(opcion);
             if ((op == 0) || (op == 1)) {
                 valida = true;
-                enciendeLed();
             }
         } catch (Exception ex) {
             valida = false;
-            apagaLed();
         }
         return valida;
     }
@@ -60,8 +58,8 @@ public class HelloWorld {
 }
 
     private static void enciendeLed() {
-    final GpioController gpio = GpioFactory.getInstance();
-final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_22);
+        final GpioController gpio = GpioFactory.getInstance();
+        final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_22);
         pin.high();
         gpio.shutdown();
     }

@@ -1,12 +1,12 @@
 package com.Raspberry.helloworld;
 
-import java.net.StandardSocketOptions;
 import java.util.Scanner;
-
+import com.pi4j.io.gpio.*;
 public class HelloWorld {
     private static boolean estadoled = false;
-    public static void main (String[] args){
-        while(true){
+
+    public static void main(String[] args) {
+        while (true) {
             borrapantalla();
             menuled();
             leerOpcion();
@@ -18,40 +18,52 @@ public class HelloWorld {
         Scanner teclado = new Scanner(System.in);
         opcion = teclado.nextLine();
         if (validaOpcion(opcion)) {
-          switch (Integer.parseInt(opcion)) {
-              case 0:
-                  System.exit(-1);
-                  break;
-              case 1:
-                  cambiaLed();
-                  break;
-          }
-        }else{
-           System.out.print("Opción incorrecta, introduzca opcion correcta: ");
-           leerOpcion();
+            switch (Integer.parseInt(opcion)) {
+                case 0:
+                    System.exit(-1);
+                    break;
+                case 1:
+                    cambiaLed();
+                    break;
+            }
+        } else {
+            System.out.print("Opción incorrecta, introduzca opcion correcta: ");
+            leerOpcion();
         }
     }
 
     private static void cambiaLed() {
-        if (estadoled==false){
-            estadoled=true;
-        }else{
-            estadoled=false;
-        }
+        estadoled = !estadoled;
     }
 
     private static boolean validaOpcion(String opcion) {
         int op;
-        boolean valida= false;
+        boolean valida = false;
         try {
-                op= Integer.parseInt(opcion);
-                if((op==0)||(op==1)){
-                    valida=true;
+            op = Integer.parseInt(opcion);
+            if ((op == 0) || (op == 1)) {
+                valida = true;
+                enciendeLed();
             }
-        } catch(Exception ex){
-            valida=false;
+        } catch (Exception ex) {
+            valida = false;
+            apagaLed();
         }
         return valida;
+    }
+
+    private static void apagaLed() {
+        final GpioController gpio = GpioFactory.getInstance();
+        final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_22);
+        pin.low();
+        gpio.shutdown();
+}
+
+    private static void enciendeLed() {
+    final GpioController gpio = GpioFactory.getInstance();
+final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_22);
+        pin.high();
+        gpio.shutdown();
     }
 
     private static void menuled() {
@@ -60,7 +72,7 @@ public class HelloWorld {
         System.out.println("Estado actual " + estadoled);
         System.out.println("1. Cambiar estado ");
         System.out.println("0. Salir          ");
-        System.out.println("");
+        System.out.println();
         System.out.print("Introduzca opción: ");
     }
 

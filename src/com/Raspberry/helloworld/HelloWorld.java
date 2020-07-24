@@ -58,8 +58,8 @@ public class HelloWorld {
         System.out.println("   Menu de led   ");
         System.out.println("-----------------");
         System.out.println("Estado actual " + estadoled);
-        System.out.println("1.Cambiar estado ");
-        System.out.println("0. Salir         ");
+        System.out.println("1. Cambiar estado ");
+        System.out.println("0. Salir          ");
         System.out.println("");
         System.out.print("Introduzca opción: ");
     }
